@@ -7,6 +7,7 @@ const router = new Router();
 const authMiddleware = require("../middleware/auth.middleware");
 const fileService = require("../services/fileService");
 const File = require("../models/File");
+const secret = process.env.SECRET_KEY
 
 router.post(
   "/registration",
