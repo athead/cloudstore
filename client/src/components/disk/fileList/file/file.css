@@ -1,0 +1,121 @@
+.file {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border-radius: 15px;
+  display: grid;
+  grid-template-rows: 6fr 2fr 1fr 1fr;
+  align-items: center;
+  cursor: pointer;
+  transition: 300ms ease;
+  max-height: 180px;
+  font-size: 0.9em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /*rgba(31, 81, 86, 0.439)*/
+  border: 1px solid transparent;
+  z-index: 0;
+}
+
+.file.bordered {
+  border: 1px solid#1f51568c;
+}
+
+.file:hover {
+  background-color: rgba(31, 81, 86, 0.151);
+}
+.file:hover.file__img {
+  scale: 1.1;
+  transform: scale(1.1);
+}
+.file:hover .file__border__selected {
+  border: 2px solid #1f515646;
+}
+
+.file.folder {
+  grid-template-rows: 5fr 1fr 2fr;
+}
+
+.file__border__name {
+  grid-column: 1;
+  justify-self: center;
+  font-weight: 600;
+  transition: all 300ms;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  max-width: 92%;
+}
+
+.file__border__selected {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  height: 20px;
+  width: 20px;
+  transition: 300ms ease;
+  border: 2px solid transparent;
+  border-radius: 30%;
+  display: inline-block;
+}
+
+.file__border__selected.active {
+  border: 2px solid transparent !important;
+}
+.file__border__selected__icon {
+  width: 20px;
+  position: absolute;
+  transition: 300ms ease;
+  scale: 0;
+  transform: scale(0);
+}
+
+.file__border__selected__icon.active {
+  scale: 1.15;
+  transform: scale(1.15);
+}
+
+.file__border__extension {
+  position: absolute;
+  top: 0;
+  padding: 4px 10px;
+  right: 0;
+  font-size: 0.8rem;
+  line-height: 13px;
+  color: white;
+  font-weight: 500;
+  background-color: #1f5156ba;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-transform: uppercase;
+  max-width: 50%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.file__shared_icon {
+  position: absolute;
+  bottom: 0;
+  padding: 4px 10px;
+  right: 0;
+  opacity: 0.7
+}
+
+.file__img {
+  margin-top: 20px;
+  grid-column: 1;
+  justify-self: center;
+  max-height: 90px;
+  transition: all 300ms;
+}
+.file__date {
+  grid-column: 1;
+  justify-self: center;
+  font-size: 0.8em;
+}
+.file__size {
+  grid-column: 1;
+  justify-self: center;
+  font-size: 0.7em;
+  margin-bottom: 15px;
+}

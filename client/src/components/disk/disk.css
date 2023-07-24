@@ -1,0 +1,335 @@
+.disk {
+  height: 100%;
+}
+
+.dragndrop {
+  outline: 2px dashed #1f5156;
+  height: calc(100vh - 100px);
+  display: flex;
+  justify-content: center;
+}
+.dragndrop__input {
+  margin: auto;
+}
+.dragndrop__icon {
+  width: 100%;
+  height: 150px;
+  fill: #1f5156;
+  display: block;
+  margin-bottom: 40px;
+}
+.dragndrop__text {
+  font-size: 2rem;
+  font-weight: 400;
+  margin: auto;
+  text-align: center;
+  color: #1f5156;
+}
+
+.disk__btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.popup {
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+.popup__content {
+  width: 400px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 15px;
+}
+.popup__create {
+  align-self: flex-end;
+}
+.popup__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+
+.inline-text {
+  margin: auto 0;
+  color: #1f5156;
+  transition: all 300ms ease;
+}
+
+.breadcrumbs {
+  /* margin-top: 20px; */
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.breadcrumb {
+  font-weight: 400;
+  margin-right: 10px;
+}
+
+.breadcrumb.active {
+  font-weight: 600;
+  cursor: default;
+  border: 1px solid #1f515620;
+}
+
+.breadcrumb__icon {
+  max-height: 20px;
+  margin: auto;
+}
+
+/* DROPDOWN START */
+.filter {
+  font-size: 1em;
+  margin-left: auto;
+  position: relative;
+  color: #1f5156;
+  max-width: 180px;
+  min-width: 100px;
+  /* height: 50px; */
+  /* box-shadow:5px 5px 6px rgba(0, 0, 0, .221); */
+  cursor: pointer;
+  z-index: 30;
+}
+
+.filter__direction_icon {
+  height: 20px;
+  transition: 0.4s;
+  user-select: none;
+}
+.filter__direction_icon.r180 {
+  transform: rotate(180deg);
+}
+
+.filter__icon {
+  height: 26px;
+  transition: 0.4s;
+  user-select: none;
+}
+
+.filter__input {
+  display: none;
+  appearance: none;
+}
+.filter__current__status {
+  padding: 5px 10px;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.4s;
+}
+
+/* .filter__current__status:hover { */
+/* border: 2px solid #1f515682; */
+/* } */
+
+.filter__current__status:hover {
+  /* color: white; */
+  border: 1px solid #1f5156;
+  background-color: #1f515620;
+}
+
+/* .status_color {
+	--width: 15px;
+	width: var(--width);
+	aspect-ratio: 1;
+	border-radius: 9999px;
+	position: absolute;
+	top: calc(50% - calc(var(--width) / 2));
+	left: 30px;
+	background-color: var(--status_color);
+} */
+.filter__message {
+  /* font-size: 24px; */
+  font-weight: 500;
+  /* color: #f1f3f5; */
+}
+.filter__expand {
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  top: calc(50% - 25px);
+  right: 30px;
+  transition: 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+/* .filter__expand:hover {
+  background-color: #f1f3f57c;
+} */
+.filter__expand * {
+  cursor: pointer;
+}
+
+.filter__opened .filter__icon {
+  transform: rotate(180deg);
+}
+
+.filter__opened .filter__current__status {
+  border-radius: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid #1f5156;
+}
+
+.filter__opened .filter__other > *:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.filter__other > *:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.filter__other > *:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.filter__other {
+  max-height: 0;
+  position: absolute;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  transition: 0.4s ease-out;
+  /* box-shadow:5px 5px 6px rgba(0, 0, 0, .221); */
+}
+.filter__other:first-child {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.filter__opened .filter__other {
+  max-height: 1000px;
+  margin-bottom: 1em;
+}
+.filter__other__card {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  aspect-ratio: 3/1;
+  border-bottom: 1px solid #1f5156;
+  border-left: 1px solid #1f5156;
+  border-right: 1px solid #1f5156;
+  background-color: #eeeeee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.filter__other__card:hover {
+  background-color: #e1e6e7;
+}
+
+/* .breadcrumbs {
+  margin-top: 20px;
+}
+.breadcrumb {
+  display: inline-block;
+  position: relative;
+  margin-top: 0.25em;
+  margin-right: 0.5em;
+  margin-bottom: 0.25em;
+  padding: 0.5em;
+  background-color: #1f5156;;
+  color: white;
+  white-space: nowrap;
+  font-weight: 400;
+  cursor: pointer;
+}
+.breadcrumb.icon {
+  margin-top: 0.25em;
+  margin-right: 0.5em;
+  margin-bottom: 0.25em;
+  padding: 0.1em;
+}
+.breadcrumb__icon {
+  max-height: 20px;
+}
+.breadcrumb.active {
+  font-weight: 600;
+  cursor: default;
+}
+.breadcrumb:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 100%;
+  border-width: 1em 0.25em 1em 0.5em;
+  border-style: solid;
+  border-color: transparent transparent transparent #1f5156;;
+}
+.breadcrumb + .breadcrumb {
+  margin-left: 0.75em;
+}
+.breadcrumb + .breadcrumb:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 100%;
+  border-width: 1em 0.25em 1em 0.5em;
+  border-style: solid;
+  border-color: #1f5156 #1f5156 #1f5156 transparent;
+} */
+
+.sharedfile__row {
+  display: flex;
+  /* justify-content: space-between; */
+  margin-bottom: 5px;
+}
+
+.sharedfile__row_name {
+  margin: auto 0;
+  font-weight: 500;
+  margin-right: auto;
+  font-size: 1.1em;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 1250px) {
+  /* .main_container {
+    max-width: calc(100% - 20px);
+    padding-top: 80px
+  } */
+}
+@media screen and (max-width: 900px) {
+  .filter__current__status {
+    height: 35px;
+  }
+  .disk__btns {
+    gap: 5px;
+  }
+  .breadcrumbs {
+    margin-bottom: 10px;
+  }
+}
+@media screen and (max-width: 400px) {
+}
