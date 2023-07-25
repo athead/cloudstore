@@ -3,6 +3,7 @@
   display: grid; 
   grid-template-columns: repeat(8, 1fr);
   gap: 20px;
+  padding-bottom: 100px;
 }
 .files__notfound {
   font-size: 1.4em;

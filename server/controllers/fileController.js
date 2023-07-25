@@ -68,7 +68,9 @@ class FileController {
       }
       return res.json(files);
     } catch (err) {
-      return res.status(500).json({ message: "Невозможно получить файлы", err });
+      return res
+        .status(500)
+        .json({ message: "Невозможно получить файлы", err });
     }
   }
 
@@ -81,7 +83,6 @@ class FileController {
         user: req.user.id,
         type: "dir",
       });
-      // console.log(directory)
       return res.json(directory);
     } catch (err) {
       return res
@@ -183,8 +184,15 @@ class FileController {
         user: req.user.id,
       });
       if (!file) return res.status(400).json({ message: "Файл не найден" });
+      const user = await User.findOne({ _id: req.user.id });
+      if (!user)
+        return res
+          .status(400)
+          .json({ message: "Ошибка получения пользователя" });
       await fileService.deleteFile(req, file);
       await file.deleteOne();
+      user.freeSpace = user.freeSpace - file.size;
+      await user.save();
       return res.json({
         message:
           file.type === "dir"

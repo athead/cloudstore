@@ -30,6 +30,19 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  animation: 0.3s;
+}
+
+.disk__btns.fixed {
+  position: fixed;
+  top: 70px;
+  background: rgb(238 238 238 / 43%);
+  width: 100%;
+  left: 0;
+  padding: 10px;
+  z-index: 100;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 .popup {
@@ -45,6 +58,9 @@
   justify-content: center;
   align-items: center;
   z-index: 100;
+}
+.popup__title {
+  margin-right: 5px;
 }
 .popup__content {
   width: 400px;
@@ -276,7 +292,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2; /* number of lines to show */
-  line-height: 2; /* fallback */
+  line-height: 1.2; /* fallback */
   max-height: 2 * 2; /* fallback */
 }
 

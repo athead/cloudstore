@@ -32,6 +32,7 @@ export function getFiles(dirId, sort, dir = 1) {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       dispatch(setFiles(response.data));
+      // getBreadcrumbsToDir()
     } catch (e) {
       toast(e?.response?.data?.message, { type: "error" });
     } finally {
@@ -95,10 +96,6 @@ export function uploadFile(file, dirId) {
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           onUploadProgress: (progressEvent) => {
-            // console.log(progressEvent)
-            // const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-            // console.log('total', totalLength)
-            // if (progressEvent.total) {
             uploadFile.progress = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
@@ -166,8 +163,6 @@ export function shareFile(file) {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
-      console.log(response?.data);
-      console.log(file);
       dispatch(shareFileAction(file));
       toast(response?.data?.message, { type: "success" });
       return { access_link: response?.data?.link };
@@ -179,7 +174,6 @@ export function shareFile(file) {
 }
 
 export function getBreadcrumbsToDir(dir) {
-  console.log("getBreadcrumbsToDir", dir);
   return async (dispatch) => {
     try {
       if (dir) {

@@ -50,10 +50,15 @@ const Profile = () => {
   };
 
   const getStorePercentage = () => {
-    return (
-      Math.round((currentUser?.usedSpace / currentUser?.freeSpace) * 10000) /
-      10000
-    );
+    function roundToTwo(num) {
+      return +(Math.round(num + "e+2") + "e-2");
+    }
+
+    return roundToTwo(currentUser?.usedSpace / currentUser?.freeSpace);
+    // return (
+    //   Math.round((currentUser?.usedSpace / currentUser?.freeSpace) * 10000) /
+    //   10000
+    // ).toFixed(2);
   };
 
   function humanFileSize(bytes, si = false, dp = 1) {

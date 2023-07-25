@@ -12,7 +12,7 @@ const secret = process.env.SECRET_KEY;
 router.post(
   "/registration",
   [
-    check("password").custom((pass) => {
+    check("login").custom((login) => {
       const query = User.findOne({ login });
       return query.exec().then((user) => {
         if (user) return Promise.reject("Пользователь уже существует");
@@ -38,9 +38,8 @@ router.post(
       await user.save();
       await fileService.createDir(req, new File({ user: user.id, name: "" }));
       return res.json({ message: "Регистрация успешна" });
-    } catch (e) {
-      console.log(e);
-      res.send({ message: "Ошибка сервера" });
+    } catch (err) {
+      res.send({ message: "Ошибка сервера", err });
     }
   }
 );
@@ -118,12 +117,10 @@ router.post("/login", async (req, res) => {
         login: user.login,
         freeSpace: user.freeSpace,
         usedSpace: user.usedSpace,
-        // avatar: user.avatar,
       },
     });
-  } catch (e) {
-    console.log(e);
-    res.send({ message: "Ошибка сервера" });
+  } catch (err) {
+    res.send({ message: "Ошибка сервера", err });
   }
 });
 
@@ -141,9 +138,8 @@ router.get("/auth", authMiddleware, async (req, res) => {
         avatar: user.avatar,
       },
     });
-  } catch (e) {
-    console.log(e);
-    res.send({ message: "Ошибка сервера" });
+  } catch (err) {
+    res.send({ message: "Ошибка сервера", err });
   }
 });
 module.exports = router;

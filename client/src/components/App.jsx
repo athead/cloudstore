@@ -13,6 +13,12 @@ import Profile from "./profile/Profile";
 function App() {
   const isAuth = useSelector((state) => state.user.isAuth);
   const isAppLoading = useSelector((state) => state.app.isAppLoading);
+  const isPopped = useSelector(
+    (state) =>
+      state.files.popupDisplay !== "none" ||
+      state.files.popupShareDisplay !== "none"
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,7 +37,9 @@ function App() {
     <div className={"App"}>
       <BrowserRouter>
         <NavBar />
-        <div className="main_container">
+        <div
+          className={"main_container " + (isPopped ? "hidden_overflow" : "")}
+        >
           {!isAuth ? (
             <Routes>
               <Route

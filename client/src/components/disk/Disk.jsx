@@ -1,52 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./disk.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import {
-  getFiles,
-  uploadFile,
-  downloadFile,
-  deleteFile,
-  shareFile,
-  getBreadcrumbsToDir,
-} from "../../actions/file";
+import { getFiles, uploadFile, getBreadcrumbsToDir } from "../../actions/file";
 import FileList from "./fileList/FileList";
-// import backLogo from "../../assets/img/left-arrow-back.svg";
-import createFolder from "../../assets/img/icons8-folder.svg";
-import deleteFiles from "../../assets/img/icons8-trash-can.svg";
-import uploadLogo from "../../assets/img/icons8-upload-to-the-cloud.svg";
-import shareLogo from "../../assets/img/icons8-share.svg";
-import cancelLogo from "../../assets/img/icons8-cancel.svg";
-import downloadLogo from "../../assets/img/icons8-download.png";
 import PopupCreateFolder from "./PopupCreateFolder";
 import PopupShare from "./PopupShare";
+import TrackVisibility from "react-on-screen";
 
-import {
-  clearSelected,
-  setCurrentDir,
-  setPopupDisplay,
-  setPopupShareDisplay,
-} from "../../store/reducers/fileReducer";
+import { clearSelected, setCurrentDir } from "../../store/reducers/fileReducer";
 import BreadCrumbs from "./BreadCrumbs";
 import Uploader from "./uploader/Uploader";
-import Filter from "./Filter";
+import DiskButtons from "./DiskButtons";
 
 const Disk = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  
   const currentDir = useSelector((state) => state.files.currentDir);
-  // const dirStack = useSelector((state) => state.files.dirStack);
-  const selectedFiles = useSelector((state) => state.files.selectedFiles);
   const breadCrumbs = useSelector((state) => state.files.breadCrumbs);
+
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const inputRef = useRef(null);
-
-  const [filter, setFilter] = useState({
-    value: searchParams.get("value") || "type",
-    direction: searchParams.get("direction") || "asc",
-  });
-  const [dragEnter, setDragEnter] = useState(false);
 
   // handle filter Events
   const onFilter = (e) => {
@@ -57,6 +30,12 @@ const Disk = () => {
       direction: e.direction,
     });
   };
+
+  const [filter, setFilter] = useState({
+    value: searchParams.get("value") || "type",
+    direction: searchParams.get("direction") || "asc",
+  });
+  const [dragEnter, setDragEnter] = useState(false);
 
   // handle drag events
   function dragEnterHandler(event) {
@@ -79,37 +58,20 @@ const Disk = () => {
     setDragEnter(false);
   }
 
-  // function openDirHandler(id) {
-  // dispatch(breadCrumbsPush(file));
-  // dispatch(pushToStack(currentDir));
-  // dispatch(setCurrentDir(id));
-  // }
-
   useEffect(() => {
-    // setSearchParams({
-    //   value: filter.value,
-    //   direction: filter.direction,
-    // });
     const dir = searchParams.get("dir") || undefined;
-    // openDirHandler(dir);
     setFilter({
       value: searchParams.get("value") || "type",
       direction: searchParams.get("direction") || "asc",
     });
-    // if (dir) dispatch(setCurrentDir(dir));
-    dispatch(getBreadcrumbsToDir(dir ? dir : currentDir));
-    dispatch(getFiles(dir ? dir : currentDir, filter.value, filter.direction));
+    dispatch(getBreadcrumbsToDir(dir));
+    dispatch(getFiles(dir, filter.value, filter.direction));
     dispatch(clearSelected());
+    // dispatch(setCurrentDir(dir ? dir : currentDir));
   }, [dispatch, currentDir, filter.value, filter.direction, searchParams]);
-
-  const showPopupHandler = () => {
-    dispatch(setPopupDisplay("flex"));
-  };
 
   function handleDirChange(dirId = undefined) {
     dispatch(setCurrentDir(dirId));
-    // dispatch(getBreadcrumbsToDir(dirId));
-    // dispatch(clearSelected());
     setSearchParams({
       ...(dirId ? { dir: dirId } : {}),
       ...(searchParams.get("value")
@@ -121,34 +83,6 @@ const Disk = () => {
     });
   }
 
-  const fileUploadHandler = (event) => {
-    const files = [...event.target.files];
-    files.forEach((file) => dispatch(uploadFile(file, currentDir)));
-    dispatch(clearSelected());
-  };
-
-  const deleteFilesHandler = (selectedFiles) => {
-    selectedFiles.forEach((file) => {
-      console.log(file);
-      dispatch(deleteFile(file));
-    });
-    dispatch(clearSelected());
-  };
-
-  const shareFilesHandler = (selectedFiles) => {
-    selectedFiles.forEach((file) => {
-      shareFile(file);
-    });
-    dispatch(setPopupShareDisplay("flex"));
-  };
-
-  const downloadFiles = (selectedFiles) => {
-    selectedFiles.forEach((file) => {
-      downloadFile(file);
-    });
-    dispatch(clearSelected());
-  };
-
   return !dragEnter ? (
     <div
       className="disk"
@@ -158,75 +92,13 @@ const Disk = () => {
       onDragOver={dragEnterHandler}
     >
       <BreadCrumbs crumbs={breadCrumbs} onChangeDirCallback={handleDirChange} />
-      <div className="disk__btns">
-        <button className="btn icon" onClick={() => showPopupHandler()}>
-          <img src={createFolder} alt="Создать папку" className="btn__icon" />
-        </button>
-        <button className="btn icon">
-          <img
-            src={uploadLogo}
-            onClick={() => inputRef.current.click()}
-            alt="Загрузить"
-            className="btn__icon"
-          />
-        </button>
-        <button
-          className={
-            "btn icon " + (selectedFiles?.length > 0 ? "" : "scaled_down")
-          }
-          onClick={() => deleteFilesHandler(selectedFiles)}
-        >
-          <img
-            src={deleteFiles}
-            alt="Удалить выбранные"
-            className="btn__icon"
-          />
-        </button>
-        <button
-          className={
-            "btn icon " +
-            (selectedFiles?.filter((e) => e.type !== "dir").length > 0
-              ? ""
-              : "scaled_down")
-          }
-          onClick={() => shareFilesHandler(selectedFiles)}
-        >
-          <img src={shareLogo} alt="Шерить файлы" className="btn__icon" />
-        </button>
-        <button
-          className={
-            "btn icon " + (selectedFiles?.length > 0 ? "" : "scaled_down")
-          }
-          onClick={() => downloadFiles(selectedFiles)}
-        >
-          <img src={downloadLogo} alt="Загрузить" className="btn__icon" />
-        </button>
-        <span
-          className={
-            "inline-text " + (selectedFiles?.length > 1 ? "" : "scaled_down")
-          }
-          style={{ marginLeft: "auto" }}
-        >
-          Выбрано: {selectedFiles?.length}
-        </span>
-        <button
-          className={
-            "btn icon " + (selectedFiles?.length > 1 ? "" : "scaled_down")
-          }
-          onClick={() => dispatch(clearSelected())}
-        >
-          <img src={cancelLogo} alt="Очистить выбор" className="btn__icon" />
-        </button>
-        <input
-          multiple={true}
-          type="file"
-          ref={inputRef}
-          onChange={(event) => fileUploadHandler(event)}
-          style={{ display: "none" }}
-        ></input>
-
-        <Filter filter={filter} onFilter={(e) => onFilter(e)} />
-      </div>
+      <TrackVisibility>
+        <DiskButtons
+          filter={filter}
+          currentDir={currentDir}
+          onFilter={onFilter}
+        />
+      </TrackVisibility>
       <FileList />
       <Uploader />
       <PopupCreateFolder />

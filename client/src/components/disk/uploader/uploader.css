@@ -4,6 +4,12 @@
   right: 0;
   /* border-top-left-radius: 15px; */
   width: 500px;
+  transform: translateY(0);
+  transition: 0.3s;
+}
+
+.uploader.hidden {
+  transform: translateY(100%);
 }
 
 .uploader__header {
@@ -31,9 +37,10 @@
 }
 
 .uploader__body {
+  background-color: rgb(238, 238, 238);
   border-left: 2px solid #1f5156;
   display: flex;
-  gap: 10px;
+  /* gap: 10px; */
   flex-direction: column;
   padding: 10px;
   color: #1f5156;
@@ -55,7 +62,7 @@
   transition: 300ms ease;
   max-height: 100px;
   /* font-size: 0.9em; */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
   border: 1px solid transparent;
   /* z-index: -1; */
 }

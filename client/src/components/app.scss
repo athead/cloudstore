@@ -8,6 +8,7 @@
   text-decoration: none;
   box-sizing: border-box;
   font-family: "Ubuntu", sans-serif;
+  font-display: swap;
 }
 
 html {
@@ -32,6 +33,9 @@ body {
   height: 100vh;
 }
 
+.hidden_overflow {
+  overflow: hidden;
+}
 .btn {
   color: #1f5156;
   border: 1px solid transparent;
