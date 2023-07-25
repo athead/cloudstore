@@ -17,15 +17,15 @@ client/node_modules/
 .eslintcache
 
 # dotenv environment variable files
-server/.env
-server/.env.development.local
-server/.env.production.local
-server/.env.local
+server/.env*
+server/.env.development.local*
+server/.env.production.local*
+server/.env.local*
 
-client/.env
-client/.env.development.local
-client/.env.production.local
-client/.env.local
+client/.env*
+client/.env.development.local*
+client/.env.production.local*
+client/.env.local*
 
 server/files
 server/static

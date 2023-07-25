@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./profile.css";
 import { useDispatch, useSelector } from "react-redux";
 import { authAction, changePasswordAction } from "../../actions/user";
