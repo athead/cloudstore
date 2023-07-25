@@ -26,6 +26,3 @@ client/.env*
 client/.env.development.local*
 client/.env.production.local*
 client/.env.local*
-
-server/files
-server/static
