@@ -4,6 +4,7 @@ import {
   setFiles,
   deleteFileAction,
   shareFileAction,
+  setBreadcrumbs,
 } from "../store/reducers/fileReducer";
 import {
   addUploadFile,
@@ -165,14 +166,37 @@ export function shareFile(file) {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
-      console.log(response?.data)
-      console.log(file)
+      console.log(response?.data);
+      console.log(file);
       dispatch(shareFileAction(file));
       toast(response?.data?.message, { type: "success" });
       return { access_link: response?.data?.link };
     } catch (e) {
       toast(e?.response?.data?.message, { type: "error" });
       // return "Ошибка создания ссылки на файл";
+    }
+  };
+}
+
+export function getBreadcrumbsToDir(dir) {
+  console.log("getBreadcrumbsToDir", dir);
+  return async (dispatch) => {
+    try {
+      if (dir) {
+        const response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URL}/api/files/breadcrumbs?id=${dir}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        dispatch(setBreadcrumbs(response.data[0]));
+      } else {
+        dispatch(setBreadcrumbs([]));
+      }
+    } catch (e) {
+      toast(e?.response?.data?.message, { type: "error" });
     }
   };
 }

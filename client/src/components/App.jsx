@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import "./App.css";
+import "./app.scss";
 import NavBar from "./navbar/Navbar";
 import SignForm from "./signForm/SignForm";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -8,14 +8,24 @@ import { authAction } from "../actions/user";
 import Disk from "./disk/Disk";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Profile from "./profile/Profile";
 
 function App() {
   const isAuth = useSelector((state) => state.user.isAuth);
+  const isAppLoading = useSelector((state) => state.app.isAppLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(authAction());
   });
+
+  if (isAppLoading) {
+    return (
+      <div className="center__screen__wrapper">
+        <div className="center__screen lds-dual-ring"></div>
+      </div>
+    );
+  }
 
   return (
     <div className={"App"}>
@@ -24,7 +34,11 @@ function App() {
         <div className="main_container">
           {!isAuth ? (
             <Routes>
-              <Route path="login" exact element={<SignForm isLogin={true} />} />
+              <Route
+                path="/login"
+                exact
+                element={<SignForm isLogin={true} />}
+              />
               <Route
                 path="registration"
                 exact
@@ -35,6 +49,7 @@ function App() {
           ) : (
             <Routes>
               <Route exact path="/" element={<Disk />} />
+              <Route exact path="/account" element={<Profile />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           )}

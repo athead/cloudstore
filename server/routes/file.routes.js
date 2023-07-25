@@ -10,5 +10,6 @@ router.get("/download", authMiddleware, fileController.downloadFile);
 router.delete("/", authMiddleware, fileController.deleteFile);
 router.get("/search", authMiddleware, fileController.searchFile);
 router.post("/share", authMiddleware, fileController.shareFile);
+router.get("/breadcrumbs", authMiddleware, fileController.getDirBreadCrumbs);
 
 module.exports = router;

@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./disk.css";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import {
   getFiles,
   uploadFile,
   downloadFile,
   deleteFile,
   shareFile,
+  getBreadcrumbsToDir,
 } from "../../actions/file";
 import FileList from "./fileList/FileList";
 // import backLogo from "../../assets/img/left-arrow-back.svg";
@@ -31,19 +33,30 @@ import Filter from "./Filter";
 
 const Disk = () => {
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const currentDir = useSelector((state) => state.files.currentDir);
   // const dirStack = useSelector((state) => state.files.dirStack);
   const selectedFiles = useSelector((state) => state.files.selectedFiles);
   const breadCrumbs = useSelector((state) => state.files.breadCrumbs);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const inputRef = useRef(null);
 
   const [filter, setFilter] = useState({
-    value: "type",
-    // prevValue: "type",
-    direction: "asc",
+    value: searchParams.get("value") || "type",
+    direction: searchParams.get("direction") || "asc",
   });
   const [dragEnter, setDragEnter] = useState(false);
+
+  // handle filter Events
+  const onFilter = (e) => {
+    setFilter(e);
+    setSearchParams({
+      ...(searchParams.get("dir") ? { dir: searchParams.get("dir") } : {}),
+      value: e.value,
+      direction: e.direction,
+    });
+  };
 
   // handle drag events
   function dragEnterHandler(event) {
@@ -66,26 +79,46 @@ const Disk = () => {
     setDragEnter(false);
   }
 
+  // function openDirHandler(id) {
+  // dispatch(breadCrumbsPush(file));
+  // dispatch(pushToStack(currentDir));
+  // dispatch(setCurrentDir(id));
+  // }
+
   useEffect(() => {
-    dispatch(getFiles(currentDir, filter.value, filter.direction));
+    // setSearchParams({
+    //   value: filter.value,
+    //   direction: filter.direction,
+    // });
+    const dir = searchParams.get("dir") || undefined;
+    // openDirHandler(dir);
+    setFilter({
+      value: searchParams.get("value") || "type",
+      direction: searchParams.get("direction") || "asc",
+    });
+    // if (dir) dispatch(setCurrentDir(dir));
+    dispatch(getBreadcrumbsToDir(dir ? dir : currentDir));
+    dispatch(getFiles(dir ? dir : currentDir, filter.value, filter.direction));
     dispatch(clearSelected());
-  }, [dispatch, currentDir, filter]);
+  }, [dispatch, currentDir, filter.value, filter.direction, searchParams]);
 
   const showPopupHandler = () => {
     dispatch(setPopupDisplay("flex"));
   };
 
-  // function backDirHandler() {
-  //   const backDirId = dirStack.pop();
-  //   dispatch(setCurrentDir(backDirId));
-  //   dispatch(clearSelected());
-  // }
-
-  function handleDirChange(e, dirId) {
-    const event = e || window.event;
-    event.preventDefault();
+  function handleDirChange(dirId = undefined) {
     dispatch(setCurrentDir(dirId));
-    dispatch(clearSelected());
+    // dispatch(getBreadcrumbsToDir(dirId));
+    // dispatch(clearSelected());
+    setSearchParams({
+      ...(dirId ? { dir: dirId } : {}),
+      ...(searchParams.get("value")
+        ? { value: searchParams.get("value") }
+        : {}),
+      ...(searchParams.get("direction")
+        ? { direction: searchParams.get("direction") }
+        : {}),
+    });
   }
 
   const fileUploadHandler = (event) => {
@@ -151,7 +184,10 @@ const Disk = () => {
         </button>
         <button
           className={
-            "btn icon " + (selectedFiles?.length > 0 ? "" : "scaled_down")
+            "btn icon " +
+            (selectedFiles?.filter((e) => e.type !== "dir").length > 0
+              ? ""
+              : "scaled_down")
           }
           onClick={() => shareFilesHandler(selectedFiles)}
         >
@@ -189,7 +225,7 @@ const Disk = () => {
           style={{ display: "none" }}
         ></input>
 
-        <Filter filter={filter} onFilter={(e) => setFilter(e)} />
+        <Filter filter={filter} onFilter={(e) => onFilter(e)} />
       </div>
       <FileList />
       <Uploader />

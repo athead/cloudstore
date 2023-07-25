@@ -9,9 +9,7 @@ const PUSH_TO_SELECTED = "PUSH_TO_SELECTED";
 const POP_FROM_SELECTED = "POP_FROM_SELECTED";
 const CLEAR_SELECTED = "CLEAR_SELECTED";
 const SHARE_FILE = "SHARE_FILE";
-
-const BREADCRUMBS_ADD = "BREADCRUMBS_ADD";
-// const POP_FROM_STACK = "POP_FROM_STACK";
+const SET_BREADCRUMBS = "SET_BREADCRUMBS";
 
 const defaultState = {
   files: [],
@@ -20,7 +18,6 @@ const defaultState = {
   popupShareDisplay: "none",
   dirStack: [],
   selectedFiles: [],
-  // sharedFiles: [],
   breadCrumbs: [],
 };
 
@@ -32,12 +29,6 @@ export default function fileReducer(state = defaultState, action) {
       return {
         ...state,
         currentDir: action.payload,
-        breadCrumbs: [
-          ...state.breadCrumbs.slice(
-            0,
-            state.breadCrumbs.findIndex((el) => el._id === action.payload) + 1
-          ),
-        ],
       };
     case ADD_FILE:
       return { ...state, files: [...state.files, action.payload] };
@@ -78,25 +69,12 @@ export default function fileReducer(state = defaultState, action) {
           ...state.files.filter((el) => el._id !== action.payload._id),
           action.payload,
         ],
-        // files: (state.files.find(
-        //   (file) => file._id === action.payload._id
-        // ).access_link = action.payload.access_link),
-        // selectedFiles: (state.selectedFiles.find(
-        //   (file) => file._id === action.payload._id
-        // ).access_link = action.payload.access_link),
       };
-    // return {
-    //   ...state,
-    //   files: [
-    //     action.payload,
-    //     ...state.filesfilter((file) => file._id === action.payload._id),
-    //   ],
-    // };
 
-    case BREADCRUMBS_ADD:
+    case SET_BREADCRUMBS:
       return {
         ...state,
-        breadCrumbs: [...state.breadCrumbs, action.payload],
+        breadCrumbs: action.payload,
       };
     default:
       return state;
@@ -136,9 +114,9 @@ export const clearSelected = () => ({
   payload: [],
 });
 
-export const breadCrumbsPush = (file) => ({
-  type: BREADCRUMBS_ADD,
-  payload: file,
-});
-
 export const shareFileAction = (file) => ({ type: SHARE_FILE, payload: file });
+
+export const setBreadcrumbs = (list) => ({
+  type: SET_BREADCRUMBS,
+  payload: list,
+});

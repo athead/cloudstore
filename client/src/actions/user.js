@@ -1,6 +1,7 @@
 import axios from "axios";
 import { setUser, logoutUser } from "../store/reducers/userReducer";
 import { toast } from "react-toastify";
+import { setAppLoading } from "../store/reducers/appReducer";
 export const registrationAction = async (login, password) => {
   try {
     const response = await axios.post(
@@ -44,13 +45,41 @@ export const loginAction = (login, password) => {
 export const authAction = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/auth/auth`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/api/auth/auth`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
       dispatch(setUser(response.data.user));
+      dispatch(setAppLoading(false));
       localStorage.setItem("token", response.data.token);
     } catch (e) {
       localStorage.removeItem("token");
+      dispatch(setAppLoading(false));
+    }
+  };
+};
+
+export const changePasswordAction = (login, password, new_pass1, new_pass2) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/api/auth/changepassword`,
+        {
+          login,
+          password,
+          new_pass1,
+          new_pass2,
+        }
+      );
+      dispatch(setUser(response.data?.user));
+      localStorage.setItem("token", response.data?.token);
+      toast(response.data?.message, { type: "success" });
+      // return { message: response.data?.message };
+    } catch (e) {
+      toast(e?.response?.data?.message, { type: "error" });
+      throw e?.response?.data || "Ошибка сервера";
     }
   };
 };

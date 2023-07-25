@@ -1,5 +1,6 @@
 const fs = require("fs");
 const File = require("../models/File");
+const path = require("path");
 
 class FileService {
   createDir(req, file) {
@@ -14,32 +15,37 @@ class FileService {
           return reject({ message: `Папка ${file.name} уже есть на сервере` });
         }
       } catch (e) {
-        console.log(e);
-        return reject({ message: "Ошибка создания папки" });
+        return reject({ message: "Ошибка создания папки", err: e });
       }
     });
   }
   deleteFile(req, file) {
-    const path = this.getPath(req, file);
+    const filePath = this.getPath(req, file);
+    console.log(file);
     return new Promise((resolve, reject) => {
       try {
         if (file.type === "dir") {
-          fs.rmdirSync(path);
+          fs.rmdirSync(filePath);
         } else {
-          fs.unlinkSync(path);
+          fs.unlinkSync(filePath);
         }
         return resolve();
       } catch (e) {
-        console.log(e);
-        return reject({ message: `Папка ${file.name} не пуста` });
+        return reject({
+          message:
+            file.type === "dir"
+              ? `Папка ${file.name} не пуста`
+              : `Ошибка удаления файла ${file.name}`,
+          err: e,
+        });
       }
     });
   }
   getPath(req, file) {
-    return `${req.filePath}\\${file.user}\\${file.path}`;
+    return path.join(`${req.filePath}`, `${file.user}`, `${file.path}`);
   }
   getStaticPath(req) {
-    return `${req.filePath}\\static`;
+    return path.join(`${req.filePath}`, `static`);
   }
 }
 

@@ -3,14 +3,22 @@
 *,
 *:before,
 *:after {
-  box-sizing: border-box;
-}
-
-* {
   margin: 0;
   padding: 0;
   text-decoration: none;
+  box-sizing: border-box;
   font-family: "Ubuntu", sans-serif;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: rgb(238, 238, 238)
 }
 
 .main_container {
@@ -28,16 +36,15 @@
   color: #1f5156;
   border: 1px solid transparent;
   border-radius: 10px;
-  font-size: 16px; /* Set a font size */
-  cursor: pointer; /* Mouse pointer on hover */
-  padding: 8px 10px; /* Some padding */
+  font-size: 16px; 
+  cursor: pointer; 
+  padding: 8px 10px; 
   transition: all 300ms ease;
   display: flex;
   flex-direction: row;
   text-align: center;
   font-weight: 500;
   background-color: #1f515610;
-  /* display: block; */
 }
 .scaled_down {
   scale: 0;
@@ -46,10 +53,9 @@
   display: none !important;
 }
 .btn.icon {
-  padding: 5px 10px; /* Some padding */
+  padding: 5px 10px; 
   background-color: transparent;
   display: flex;
-  /* border: none; */
   border: 1px solid transparent;
 }
 
@@ -96,7 +102,6 @@
 
 /* Darker background on mouse-over */
 .btn:hover {
-  /* color: white; */
   border: 1px solid #1f5156;
   background-color: #1f515620;
 }
@@ -110,7 +115,6 @@ label {
   text-align: left;
   font-size: 0.8em;
   font-weight: 400;
-  /* margin-bottom: 10px; */
 }
 
 input {
@@ -136,7 +140,6 @@ h2 {
   text-decoration: none;
   margin: 0.5rem 0.5rem;
   padding-bottom: 0.5em;
-  /* height: 100%; */
   border-bottom: 3px solid transparent;
   cursor: pointer;
   display: inline;
@@ -145,7 +148,6 @@ h2 {
 
 .link-item {
   line-height: 1.2em;
-  /* margin-right: 1rem; */
 }
 
 .link-item:after {
@@ -245,11 +247,8 @@ h2 {
   }
 
   .lds-dual-ring {
-    /* display: inline-block; */
     width: 80px;
     height: 64px;
-    /* margin-left: calc(50vw - 40px);
-    margin-top: calc(50vh - 160px); */
   }
 }
 @media screen and (max-width: 400px) {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./SignForm.css";
+import "./signform.scss";
 import { useDispatch } from "react-redux";
 import { loginAction, registrationAction } from "../../actions/user";
 
@@ -67,7 +67,7 @@ const SignForm = ({ isLogin }) => {
               id="username"
               value={login}
               onChange={(e) => setLogin(e.target.value)}
-              placeholder="Введите почту"
+              placeholder="Введите логин"
             />
             {getFieldErrorMessage("login") && (
               <label className="loginform__error_label">

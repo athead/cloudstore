@@ -6,9 +6,12 @@ const CLOSE_MENU = "CLOSE_MENU";
 const TOGGLE_MENU = "TOGGLE_MENU";
 const SET_MENU = "SET_MENU";
 
+const SET_APP_LOADING = "SET_APP_LOADING";
+
 const defaultState = {
   loader: false,
   menu: false,
+  isAppLoading: true,
 };
 
 export default function userReducer(state = defaultState, action) {
@@ -25,10 +28,17 @@ export default function userReducer(state = defaultState, action) {
       return { ...state, menu: !state.menu };
     case SET_MENU:
       return { ...state, menu: action.payload };
+    case SET_APP_LOADING:
+      return { ...state, isAppLoading: action.payload };
     default:
       return state;
   }
 }
+
+export const setAppLoading = (state) => ({
+  type: SET_APP_LOADING,
+  payload: state,
+});
 
 export const showLoader = () => ({ type: SHOW_LOADER });
 export const hideLoader = () => ({ type: HIDE_LOADER });

@@ -15,7 +15,7 @@ class FileController {
         file.path = name;
         await fileService.createDir(req, file);
       } else {
-        file.path = `${parentFile.path}\\${file.name}`;
+        file.path = path.join(`${parentFile.path}`, `${file.name}`);
         await fileService.createDir(req, file);
         parentFile.child.push(file._id);
         await parentFile.save();
@@ -24,7 +24,6 @@ class FileController {
       await file.save();
       return res.json(file);
     } catch (err) {
-      console.log(err);
       return res.status(400).json(err);
     }
   }
@@ -69,8 +68,25 @@ class FileController {
       }
       return res.json(files);
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ message: "Невозможно получить файлы" });
+      return res.status(500).json({ message: "Невозможно получить файлы", err });
+    }
+  }
+
+  async getDirBreadCrumbs(req, res) {
+    try {
+      const dirId = req.query.id;
+      if (!dirId) return res.json([]);
+      let directory = await File.find({
+        _id: dirId,
+        user: req.user.id,
+        type: "dir",
+      });
+      // console.log(directory)
+      return res.json(directory);
+    } catch (err) {
+      return res
+        .status(400)
+        .json({ message: "Ошибка получения хлебных крошек", err });
     }
   }
 
@@ -80,9 +96,8 @@ class FileController {
       let files = await File.find({ user: req.user.id });
       files = files.filter((file) => file.name.includes(searchName));
       return res.json(files);
-    } catch (e) {
-      console.log(e);
-      return res.status(400).json({ message: "Ошибка поиска" });
+    } catch (err) {
+      return res.status(400).json({ message: "Ошибка поиска", err });
     }
   }
 
@@ -102,9 +117,14 @@ class FileController {
 
       let fPath;
       if (parentFile) {
-        fPath = `${req.filePath}\\${user._id}\\${parentFile.path}\\${file.name}`;
+        fPath = path.join(
+          `${req.filePath}`,
+          `${user._id}`,
+          `${parentFile.path}`,
+          `${file.name}`
+        );
       } else {
-        fPath = `${req.filePath}\\${user._id}\\${file.name}`;
+        fPath = path.join(`${req.filePath}`, `${user._id}`, `${file.name}`);
       }
       if (fs.existsSync(fPath)) {
         return res.status(400).json({
@@ -118,7 +138,7 @@ class FileController {
       const extension = file.name.split(".").pop().replace(".", "");
       let filePath = file.name;
       if (parentFile) {
-        filePath = `${parentFile.path}\\${file.name}`;
+        filePath = path.join(`${parentFile.path}`, `${file.name}`);
       }
       const dbFile = new File({
         name: file.name,
@@ -135,8 +155,9 @@ class FileController {
 
       return res.json(dbFile);
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ message: "Невозможно загрузить файл" });
+      return res
+        .status(500)
+        .json({ message: "Невозможно загрузить файл", err });
     }
   }
 
@@ -152,8 +173,7 @@ class FileController {
       }
       return res.status(400).json({ message: "Ошибка загрузки файла" });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ message: "Ошибка загрузки файла" });
+      return res.status(500).json({ message: "Ошибка загрузки файла", err });
     }
   }
   async deleteFile(req, res) {
@@ -172,7 +192,6 @@ class FileController {
             : `Файл ${file.name} удален`,
       });
     } catch (err) {
-      console.log(err);
       return res.status(500).json(err);
     }
   }
@@ -194,7 +213,7 @@ class FileController {
       const sharedFileName = (await uuid.v4()) + fileExt;
       const sharedFilePath =
         // path.resolve("..", fileService.getPath(req, dbFile)) + "\\static\\" + sharedFileName;
-        path.join(__dirname, '..', 'static', sharedFileName);
+        path.join(__dirname, "..", "static", sharedFileName);
       fs.copyFileSync(fileService.getPath(req, dbFile), sharedFilePath);
       dbFile.access_link = sharedFileName;
       await dbFile.save();
@@ -203,10 +222,9 @@ class FileController {
         link: dbFile.access_link,
       });
     } catch (err) {
-      console.log(err);
       return res
         .status(500)
-        .json({ message: "Ошибка создания ссылки для файла" });
+        .json({ message: "Ошибка создания ссылки для файла", err });
     }
   }
 }

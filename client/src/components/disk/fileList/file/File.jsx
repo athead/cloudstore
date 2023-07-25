@@ -12,11 +12,10 @@ import wordLogo from "../../../../assets/img/icons8-word.png";
 import txtLogo from "../../../../assets/img/icons8-txt.png";
 import csvLogo from "../../../../assets/img/icons8-csv.png";
 import shareLogo from "../../../../assets/img/icons8-share_link.svg";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  breadCrumbsPush,
   clearSelected,
   pushToSelected,
   pushToStack,
@@ -30,12 +29,24 @@ const File = ({ file }) => {
   const currentDir = useSelector((state) => state.files.currentDir);
   const selectedFiles = useSelector((state) => state.files.selectedFiles);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   function openDirHandler(file) {
     if (file.type === "dir") {
-      dispatch(breadCrumbsPush(file));
+      // dispatch(breadCrumbsPush(file));
       dispatch(pushToStack(currentDir));
       dispatch(setCurrentDir(file._id));
       dispatch(clearSelected());
+
+      setSearchParams({
+        dir: file._id,
+        ...(searchParams.get("value")
+          ? { value: searchParams.get("value") }
+          : {}),
+        ...(searchParams.get("direction")
+          ? { direction: searchParams.get("direction") }
+          : {}),
+      });
     }
   }
 
@@ -146,7 +157,11 @@ const File = ({ file }) => {
           className="btn icon simple file__shared_icon"
           onClick={() => copyToBuffer(file)}
         >
-          <LazyLoadImage src={shareLogo} alt="Copy link" className="btn__icon sm" />
+          <LazyLoadImage
+            src={shareLogo}
+            alt="Copy link"
+            className="btn__icon sm"
+          />
         </button>
       )}
       {/* <div className="file__border">
