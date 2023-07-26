@@ -40,7 +40,7 @@
   width: calc(100% - 20px);
   left: 0;
   padding: 10px;
-  z-index: 100;
+  z-index: 10;
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   margin: 0 10px;
@@ -57,7 +57,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 100;
 }
 .popup__title {
   margin-right: 5px;
