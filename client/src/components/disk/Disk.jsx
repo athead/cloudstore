@@ -92,7 +92,7 @@ const Disk = () => {
       onDragOver={dragEnterHandler}
     >
       <BreadCrumbs crumbs={breadCrumbs} onChangeDirCallback={handleDirChange} />
-      <TrackVisibility>
+      <TrackVisibility partialVisibility>
         <DiskButtons
           filter={filter}
           currentDir={currentDir}

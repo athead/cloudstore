@@ -15,6 +15,9 @@ const Uploader = () => {
   const countInProgress = () => {
     return files.filter((el) => parseInt(el.progress) >= 100).length;
   };
+  const countLoading = () => {
+    return files.filter((el) => parseInt(el.progress) < 100).length;
+  };
   const isLoading = (file) => {
     return files.find((el) => el._id === file._id)?.progress < 100;
   };
@@ -25,8 +28,9 @@ const Uploader = () => {
     <div className={"uploader " + (isVisible ? "" : "hidden")}>
       <div className="uploader__header">
         <div className="uploader__title">
-          {countInProgress() !== countTotal() ? "Загружается" : "Загружено"}{" "}
-          {countInProgress()} из {countTotal()}
+          {countLoading() > 0
+            ? `Загружается ${countInProgress()} из ${countTotal()}`
+            : `Загружено ${countTotal()} из ${countTotal()}`}
         </div>
         <div
           className="uploader__hide"
