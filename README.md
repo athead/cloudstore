@@ -59,4 +59,5 @@ $ npm run dev
 1. [x] Close filter and search on click outside
 2. [x] Search input "Enter" handler
 3. [x] Fixed navbar "disk buttons" display (to avoid shaking)
-4. [ ] Add image preview
+4. [ ] Add preview for images (.jpg, .png)
+5. [ ] Move size human view calculation function to _helpers
