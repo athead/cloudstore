@@ -48,6 +48,7 @@ export const authAction = () => {
       const response = await axios.get(
         `${process.env.REACT_APP_SERVER_URL}/api/auth/auth`,
         {
+          timeout: 5000,
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
@@ -56,6 +57,7 @@ export const authAction = () => {
       localStorage.setItem("token", response.data.token);
     } catch (e) {
       localStorage.removeItem("token");
+      dispatch(logoutUser());
       dispatch(setAppLoading(false));
     }
   };

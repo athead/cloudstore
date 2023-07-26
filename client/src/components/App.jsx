@@ -34,47 +34,41 @@ function App() {
   }
 
   return (
-    <div className={"App"}>
-      <BrowserRouter>
-        <NavBar />
-        <div
-          className={"main_container " + (isPopped ? "hidden_overflow" : "")}
-        >
-          {!isAuth ? (
-            <Routes>
-              <Route
-                path="/login"
-                exact
-                element={<SignForm isLogin={true} />}
-              />
-              <Route
-                path="registration"
-                exact
-                element={<SignForm isLogin={false} />}
-              />
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route exact path="/" element={<Disk />} />
-              <Route exact path="/account" element={<Profile />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          )}
-        </div>
-        <ToastContainer
-          position="bottom-left"
-          autoClose={3000}
-          hideProgressBar={true}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          pauseOnHover
-          theme="light"
-        />
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      {/* <div> */}
+      <NavBar />
+      <div className={"main_container " + (isPopped ? "hidden_overflow" : "")}>
+        {!isAuth ? (
+          <Routes>
+            <Route path="/login" exact element={<SignForm isLogin={true} />} />
+            <Route
+              path="/registration"
+              exact
+              element={<SignForm isLogin={false} />}
+            />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        ) : (
+          <Routes>
+            <Route exact path="/" element={<Disk />} />
+            <Route exact path="/account" element={<Profile />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        )}
+      </div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        pauseOnHover
+        theme="light"
+      />
+      {/* </div> */}
+    </BrowserRouter>
   );
 }
 

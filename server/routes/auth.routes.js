@@ -134,8 +134,7 @@ router.get("/auth", authMiddleware, async (req, res) => {
         id: user.id,
         login: user.login,
         freeSpace: user.freeSpace,
-        usedSpace: user.usedSpace,
-        avatar: user.avatar,
+        usedSpace: user.usedSpace
       },
     });
   } catch (err) {
