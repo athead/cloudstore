@@ -58,7 +58,9 @@
   .filelist.margin_on_fixed_buttons {
     padding-top: 36px;
   }
-  
+}
+
+@media screen and (max-width: 340px) {
   .filelist {
     grid-template-columns: repeat(1, 1fr);
   }
