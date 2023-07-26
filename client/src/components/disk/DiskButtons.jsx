@@ -11,7 +11,7 @@ import createFolder from "../../assets/img/icons8-folder.svg";
 import deleteFiles from "../../assets/img/icons8-trash-can.svg";
 import uploadLogo from "../../assets/img/icons8-upload-to-the-cloud.svg";
 import shareLogo from "../../assets/img/icons8-share.svg";
-import cancelLogo from "../../assets/img/icons8-cancel.svg";
+// import cancelLogo from "../../assets/img/icons8-cancel.svg";
 import downloadLogo from "../../assets/img/icons8-download.png";
 
 import {
