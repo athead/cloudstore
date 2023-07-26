@@ -34,24 +34,24 @@ $ npm run dev
 
 ### DB Structure
 
-- user Schema
--- login: {type: String, required: true, unique: true},
--- password: {type: String, required: true},
--- freeSpace: {type: Number, default: 1024**2*100},
--- usedSpace: {type: Number, default: 0},
--- files: [{type: ObjectId, ref:'File'}]
+## user Schema
+- login: {type: String, required: true, unique: true},
+- password: {type: String, required: true},
+- freeSpace: {type: Number, default: 1024**2*100},
+- usedSpace: {type: Number, default: 0},
+- files: [{type: ObjectId, ref:'File'}]
 
-- file Schema
--- name: { type: String, required: true },
--- type: { type: String, required: true },
--- extension: { type: String, default: "" },
--- date: { type: Date, default: Date.now() },
--- size: { type: Number, default: 0 },
--- path: { type: String, default: "" },
--- access_link: { type: String },
--- user: { type: ObjectId, ref: "User" },
--- parent: { type: ObjectId, ref: "File" },
--- child: [{ type: ObjectId, ref: "File" }],
+## file Schema
+- name: { type: String, required: true },
+- type: { type: String, required: true },
+- extension: { type: String, default: "" },
+- date: { type: Date, default: Date.now() },
+- size: { type: Number, default: 0 },
+- path: { type: String, default: "" },
+- access_link: { type: String },
+- user: { type: ObjectId, ref: "User" },
+- parent: { type: ObjectId, ref: "File" },
+- child: [{ type: ObjectId, ref: "File" }],
 
 
 ### TODO list
