@@ -58,3 +58,4 @@ $ npm run dev
 
 1. [x] Close filter and search on click outside
 2. [x] Search input "Enter" handler
+3. [ ] Fixed navbar "disk buttons" display (to avoid shaking)
