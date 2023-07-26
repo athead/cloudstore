@@ -15,12 +15,12 @@ import DiskButtons from "./DiskButtons";
 
 const Disk = () => {
   const dispatch = useDispatch();
-  
+
   const currentDir = useSelector((state) => state.files.currentDir);
   const breadCrumbs = useSelector((state) => state.files.breadCrumbs);
 
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [isButtonsVisible, setIsButtonsVisible] = useState(false);
   // handle filter Events
   const onFilter = (e) => {
     setFilter(e);
@@ -97,9 +97,10 @@ const Disk = () => {
           filter={filter}
           currentDir={currentDir}
           onFilter={onFilter}
+          onVisible={(e) => setIsButtonsVisible(e)}
         />
       </TrackVisibility>
-      <FileList />
+      <FileList isButtonsVisible={isButtonsVisible} />
       <Uploader />
       <PopupCreateFolder />
       <PopupShare />

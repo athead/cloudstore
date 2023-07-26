@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./disk.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,7 +21,13 @@ import {
 } from "../../store/reducers/fileReducer";
 import Filter from "./Filter";
 
-const DiskButtons = ({ filter, isVisible, currentDir, onFilter }) => {
+const DiskButtons = ({
+  filter,
+  isVisible,
+  currentDir,
+  onFilter,
+  onVisible,
+}) => {
   const dispatch = useDispatch();
   const selectedFiles = useSelector((state) => state.files.selectedFiles);
   const inputRef = useRef(null);
@@ -30,6 +36,9 @@ const DiskButtons = ({ filter, isVisible, currentDir, onFilter }) => {
     dispatch(setPopupDisplay("flex"));
   };
 
+  useEffect(() => {
+    onVisible(isVisible);
+  });
   const fileUploadHandler = (event) => {
     const files = [...event.target.files];
     files.forEach((file) => dispatch(uploadFile(file, currentDir)));
@@ -97,22 +106,25 @@ const DiskButtons = ({ filter, isVisible, currentDir, onFilter }) => {
       >
         <img src={downloadLogo} alt="Загрузить" className="btn__icon" />
       </button>
-      <span
-        className={
-          "inline-text " + (selectedFiles?.length > 1 ? "" : "scaled_down")
-        }
-        style={{ marginLeft: "auto" }}
-      >
-        Выбрано: {selectedFiles?.length}
-      </span>
-      <button
-        className={
-          "btn icon " + (selectedFiles?.length > 1 ? "" : "scaled_down")
-        }
-        onClick={() => dispatch(clearSelected())}
-      >
-        <img src={cancelLogo} alt="Очистить выбор" className="btn__icon" />
-      </button>
+      {/* <div style={{ marginLeft: "auto" }}>
+        <span
+          className={
+            "inline-text " + (selectedFiles?.length > 1 ? "" : "scaled_down")
+          }
+          style={{ marginLeft: "auto" }}
+        >
+          {selectedFiles?.length} эл.
+        </span>
+        <button
+          className={
+            "btn icon " + (selectedFiles?.length > 1 ? "" : "scaled_down")
+          }
+          onClick={() => dispatch(clearSelected())}
+        >
+          <img src={cancelLogo} alt="Очистить выбор" className="btn__icon" />
+        </button> 
+      </div>*/}
+      <Filter filter={filter} onFilter={(e) => onFilter(e)} />
       <input
         multiple={true}
         type="file"
@@ -120,8 +132,6 @@ const DiskButtons = ({ filter, isVisible, currentDir, onFilter }) => {
         onChange={(event) => fileUploadHandler(event)}
         style={{ display: "none" }}
       ></input>
-
-      <Filter filter={filter} onFilter={(e) => onFilter(e)} />
     </div>
   );
 };

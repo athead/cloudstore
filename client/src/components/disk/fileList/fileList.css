@@ -1,10 +1,15 @@
 .filelist {
   margin-top: 20px;
-  display: grid; 
+  display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 20px;
   padding-bottom: 100px;
 }
+
+.filelist.margin_on_fixed_buttons {
+  padding-top: 46px;
+}
+
 .files__notfound {
   font-size: 1.4em;
   font-weight: 600;
@@ -18,7 +23,6 @@
   }
 }
 
-
 @media screen and (max-width: 1450px) {
   .filelist {
     grid-template-columns: repeat(6, 1fr);
@@ -28,7 +32,7 @@
 @media screen and (max-width: 1250px) {
   .filelist {
     grid-template-columns: repeat(5, 1fr);
-    margin-top: 10px
+    margin-top: 10px;
   }
 }
 
@@ -50,7 +54,11 @@
   }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 400px) {
+  .filelist.margin_on_fixed_buttons {
+    padding-top: 36px;
+  }
+  
   .filelist {
     grid-template-columns: repeat(1, 1fr);
   }

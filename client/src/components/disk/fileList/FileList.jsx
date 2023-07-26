@@ -3,7 +3,7 @@ import "./fileList.css";
 import { useSelector } from "react-redux";
 import File from "./file/File";
 
-const FileList = () => {
+const FileList = ({ isButtonsVisible }) => {
   const loader = useSelector((state) => state.app.loader);
 
   const files = useSelector((state) => state.files.files).map((file) => (
@@ -18,11 +18,23 @@ const FileList = () => {
     );
   }
 
-  if (files.length > 0) return <div className="filelist">{files}</div>;
+  if (files.length > 0)
+    return (
+      <div
+        className={
+          "filelist " + (isButtonsVisible ? "" : "margin_on_fixed_buttons")
+        }
+      >
+        {files}
+      </div>
+    );
   else
     return (
       <div className="center__screen__wrapper">
-        <p className="center__screen files__notfound">Файлов не найдено <br/>😥</p>
+        <p className="center__screen files__notfound">
+          Файлов не найдено <br />
+          😥
+        </p>
       </div>
     );
 };
