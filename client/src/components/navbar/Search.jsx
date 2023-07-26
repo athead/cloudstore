@@ -3,10 +3,12 @@ import { getFiles, searchFiles } from "../../actions/file";
 import { showLoader } from "../../store/reducers/appReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { changeMenuState } from "../../actions/app";
+import cancelLogo from "../../assets/img/icons8-cancel.svg";
+import useOnClickOutside from "../../hooks/onClickOutside";
 
 const Search = ({ opened, onChange, onClose }) => {
   const dispatch = useDispatch();
-  const inputReference = useRef(null);
+  const inputReference = useRef();
 
   const currentDir = useSelector((state) => state.files.currentDir);
 
@@ -14,15 +16,25 @@ const Search = ({ opened, onChange, onClose }) => {
   const [searchTimeout, setSearchTimeout] = useState(false);
 
   const handleClick = () => dispatch(changeMenuState(false));
-  //   const [searchOpened, setSearchOpened] = useState(false);
 
-  function searchChangeHandler(e) {
-    setSearchText(e.target.value);
+  useOnClickOutside(inputReference, () => {
+    // Only if filter is open
+    if (opened) onClose();
+  });
+  const handleClearSearch = () => {
+    setSearchText("");
+    dispatch(showLoader());
+    onChange("");
+    dispatch(searchFiles(""))
+  }
+
+  const handleSearch = (text) => {
+    setSearchText(text);
     if (searchTimeout !== false) {
       clearTimeout(searchTimeout);
     }
     dispatch(showLoader());
-    if (e.target.value !== "") {
+    if (text !== "") {
       setSearchTimeout(
         setTimeout(
           (value) => {
@@ -30,18 +42,29 @@ const Search = ({ opened, onChange, onClose }) => {
             onChange(value);
           },
           500,
-          e.target.value
+          text
         )
       );
     } else {
       dispatch(getFiles(currentDir));
     }
+  };
+  const searchSubmit = (event) => {
+    event.preventDefault();
+    handleSearch(searchText);
+  };
+
+  function searchChangeHandler(e) {
+    handleSearch(e.target.value);
   }
   return (
-    <div className="search-box">
+    <form
+      ref={inputReference}
+      className="search-box"
+      onSubmit={(e) => searchSubmit(e)}
+    >
       <input
         type="text"
-        ref={inputReference}
         onBlur={() => onClose(false)}
         onClick={() => handleClick()}
         value={searchText}
@@ -49,12 +72,15 @@ const Search = ({ opened, onChange, onClose }) => {
         placeholder="Введите для поиска..."
         required
       />
-      {/* setSearchOpened(false) 
-      onFocus={() => opened(true)}
-      <button type="submit" className="go-icon">
-            <img src={searchLogo} alt="Search" className="nav-logo-img" />
-          </button> */}
-    </div>
+      {searchText && (
+        <img
+          src={cancelLogo}
+          onClick={() => handleClearSearch()}
+          alt="X"
+          className="search__clear_icon"
+        />
+      )}
+    </form>
   );
 };
 

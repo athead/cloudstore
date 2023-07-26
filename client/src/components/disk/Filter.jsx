@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import sortArrow from "../../assets/img/icons8-sort.png";
+import useOnClickOutside from "../../hooks/onClickOutside";
 
 const filterTypes = [
   {
@@ -21,6 +22,7 @@ const filterTypes = [
 ];
 
 const Filter = ({ filter, onFilter }) => {
+  const filterNode = useRef();
   const defaultFilterValue = filterTypes.find(
     (e) => e.value === filter.value
   ).value;
@@ -35,6 +37,11 @@ const Filter = ({ filter, onFilter }) => {
   const getCurrentFilterTitle = () => {
     return filterTypes.find((el) => el.value === sort).title;
   };
+
+  useOnClickOutside(filterNode, () => {
+    // Only if filter is open
+    if (filterOpened) setFilterOpened(false);
+  });
 
   // const changeDirection = () => {
   //   setSortDirection(!sortDirection);
@@ -62,7 +69,10 @@ const Filter = ({ filter, onFilter }) => {
   };
 
   return (
-    <section className={"filter " + (filterOpened ? "filter__opened" : "")}>
+    <section
+      ref={filterNode}
+      className={"filter " + (filterOpened ? "filter__opened" : "")}
+    >
       <div
         className="filter__current__status"
         onClick={() => setFilterOpened(!filterOpened)}

@@ -56,5 +56,5 @@ $ npm run dev
 
 ## TODO list
 
-1. [ ] Close filter on click outside
-2. [ ] Search input "Enter" handler
+1. [x] Close filter and search on click outside
+2. [x] Search input "Enter" handler
