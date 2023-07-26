@@ -2,13 +2,13 @@
 
 [DEMO](https://disk.vskill.ru)
 
-### Description
+## Description
 
 Pet-project.
 Cloud store for sharing files with friends. 
 Default: 100MB per user.
 
-### Features
+## Features
 
 - React
 - Redux
@@ -18,7 +18,7 @@ Default: 100MB per user.
 - MongoDB
 - Breadcrumbs
 
-### Build and Setup
+## Build and Setup
 
 ```bash
 # Start client
@@ -32,16 +32,16 @@ $ npm install
 $ npm run dev
 ```
 
-### DB Structure
+## DB Structure
 
-## user Schema
+### user Schema
 - login: {type: String, required: true, unique: true},
 - password: {type: String, required: true},
 - freeSpace: {type: Number, default: 1024**2*100},
 - usedSpace: {type: Number, default: 0},
 - files: [{type: ObjectId, ref:'File'}]
 
-## file Schema
+### file Schema
 - name: { type: String, required: true },
 - type: { type: String, required: true },
 - extension: { type: String, default: "" },
@@ -54,7 +54,7 @@ $ npm run dev
 - child: [{ type: ObjectId, ref: "File" }],
 
 
-### TODO list
+## TODO list
 
 1. [ ] Close filter on click outside
 2. [ ] Search input "Enter" handler
