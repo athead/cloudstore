@@ -1,6 +1,6 @@
 # Cloud Store
 
-[DEMO](https://disk.vskill.ru)
+[DEMO](http://89.223.122.39:3001/)
 
 ## Description
 
@@ -15,7 +15,7 @@ Default: 100MB per user.
 - Lazy load
 - Node.js
 - Express.js
-- MongoDB
+- MongoDB Atlas
 - Breadcrumbs
 
 ## Build and Setup
